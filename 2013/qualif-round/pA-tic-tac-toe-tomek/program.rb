@@ -1,7 +1,7 @@
 class Miracle
 
   def do_miracle
-    f = File.new("sample.input")
+    f = File.new("input.large")
 
     cases = Array.new
     one_case = Array.new
@@ -28,14 +28,16 @@ class Miracle
 
     puts "Total cases read: #{cases.length}"
 
+    File.open('output.large', 'w') do |out|
+      case_num = 0
+      cases.map { |one_case| 
+        case_num += 1
 
-    case_num = 0
-    cases.map { |one_case| 
-      case_num += 1
-
-      result = analyze one_case
-      puts "Case ##{case_num}: #{result}"
-    }
+        result = analyze one_case
+        puts "Case ##{case_num}: #{result}"
+        out.puts "Case ##{case_num}: #{result}\n"
+      }
+    end
   end
 
   def analyze(one_case)
@@ -46,8 +48,10 @@ class Miracle
     one_case.each { |row|
       count = count_x_o_t row
       if count[0] == 4 || (count[0] == 3 && count[2] == 1)
+        p "won by row: #{row}"
         return "X won"
       elsif count[1] == 4 || (count[1] == 3 && count[2] == 1)
+        p "won by row: #{row}"
         return "O won"
       else
         dots_count =+ count[3]
@@ -64,8 +68,10 @@ class Miracle
       
       count = count_x_o_t column.join
       if count[0] == 4 || (count[0] == 3 && count[2] == 1)
+        p "won by column"
         return "X won"
       elsif count[1] == 4 || (count[1] == 3 && count[2] == 1)
+        p "won by column"
         return "O won"
       end
       column = nil 
@@ -76,8 +82,10 @@ class Miracle
     diagonal = [one_case[0][0], one_case[1][1], one_case[2][2], one_case[3][3]]
     count = count_x_o_t diagonal.join
     if count[0] == 4 || (count[0] == 3 && count[2] == 1)
+      p "won by diagonal"
       return "X won"
     elsif count[1] == 4 || (count[1] == 3 && count[2] == 1)
+      p "won by diagonal"
       return "O won"
     end
 
@@ -85,8 +93,10 @@ class Miracle
     off_diagonal = [one_case[0][3], one_case[1][2], one_case[2][1], one_case[3][0]]
     count = count_x_o_t off_diagonal.join
     if count[0] == 4 || (count[0] == 3 && count[2] == 1)
+      p "won by off_diagonal"
       return "X won"
     elsif count[1] == 4 || (count[1] == 3 && count[2] == 1)
+      p "won by off_diagonal"
       return "O won"
     end
 
