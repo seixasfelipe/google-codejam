@@ -39,29 +39,31 @@ class Miracle
   def analyze(one_case)
     palindromes = 0
     (one_case[0].to_i..one_case[1].to_i).step(1) { |n| 
-      palindromes += 1 if (palindrome? n)
+      palindromes += 1 if (number_and_square_palindrome? n)
     }
     
     palindromes
   end
 
-  def palindrome?(number)
+  def number_and_square_palindrome?(number)
     number_s = number.to_s
-    square = Math.sqrt(number).to_s
-    even_square = (square.split(".")[1] == "0")
-    if number_s.size == 1 && even_square
-      return true
-    else
+
+    if palindrome? number_s
+      square = Math.sqrt(number).to_s
+      square_splitted = square.split(".")
+      even_square = square_splitted[1] == "0"
       if even_square
-        square = square.split(".")[0]
+        square = square_splitted[0]
         # p "number: #{number_s}  square: #{square}"
-        if number_s == number_s.reverse && square == square.reverse
-          return true
-        end
-      end  
+        return palindrome?(square)
+      end
     end
 
     false
+  end
+
+  def palindrome?(string)
+    string == string.reverse
   end
 
 end
